@@ -12,6 +12,14 @@ if [[ ! $(grep -rhE ^deb /etc/apt/sources.list*) == *"deb https://repo.justnikob
   exit 1
 fi
 
+command_check() {
+  if ! command -v "$1" &>/dev/null; then
+    echo -e "\n====================\n$2 could not be found!\nInstalling...\n====================\n"
+    apt-get install -y "$3"
+    echo -e "\nDONE\n"
+  fi
+}
+
 iptables_add() {
   if ! iptables -C "$1" &>/dev/null; then
     iptables -A "$1"
