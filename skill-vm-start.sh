@@ -49,6 +49,12 @@ bkp() {
   fi
 }
 
+echo -e "\n====================\nSetting timezone\n===================="
+timedatectl set-timezone Europe/Moscow
+systemctl restart systemd-timesyncd.service
+timedatectl
+echo -e "\nDONE\n"
+
 apt-get update
 command_check wget "Wget" wget
 command_check iptables "Iptables" iptables
@@ -65,12 +71,6 @@ if [ ! -f /etc/default/grub ]; then
   echo -e "\n====================\nFile /etc/default/grub not found!\n====================\n"
   exit 1
 fi
-
-echo -e "\n====================\nSetting timezone\n===================="
-timedatectl set-timezone Europe/Moscow
-systemctl restart systemd-timesyncd.service
-timedatectl
-echo -e "\nDONE\n"
 
 echo -e "\n====================\nNew user config\n===================="
 
