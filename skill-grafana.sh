@@ -68,8 +68,8 @@ read -r -e -p $'\n'"Please input domain (example: justnikobird.ru): " domain
 sed -i 's/^\(protocol\).*$/\1 = https/' /etc/grafana/grafana.ini
 sed -i 's/^\;\(domain\).*$/\1 = '"$domain"'/' /etc/grafana/grafana.ini
 sed -i 's@^\;\(root_url\).*$@\1 = https://'"$domain"'@' /etc/grafana/grafana.ini
-sed -i 's/^\;\(cert_file\).*$/\1 = '"$cert_file"'/' /etc/grafana/grafana.ini
-sed -i 's/^\;\(cert_key\).*$/\1 = '"$key_file"'/' /etc/grafana/grafana.ini
+sed -i 's@^\;\(cert_file\).*$@\1 = /etc/grafana/'"$cert_file"'@' /etc/grafana/grafana.ini
+sed -i 's@^\;\(cert_key\).*$@\1 = /etc/grafana/'"$key_file"'@' /etc/grafana/grafana.ini
 
 echo -e "\nDONE\n"
 
