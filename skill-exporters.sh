@@ -21,8 +21,8 @@ command_check() {
 }
 
 iptables_add() {
-  if ! iptables -C "$1" &>/dev/null; then
-    iptables -A "$1"
+  if ! iptables -C "$@" &>/dev/null; then
+    iptables -A "$@"
   fi
 }
 
@@ -86,7 +86,7 @@ while true; do
 
     echo -e "\n====================\nIptables configuration\n====================\n"
     monitor_vm_ip=$(ip_request)
-    iptables_add 'INPUT -p tcp -s '"$monitor_vm_ip"' --dport 9100 -j ACCEPT -m comment --comment prometheus_node_exporter'
+    iptables_add INPUT -p tcp -s "$monitor_vm_ip" --dport 9100 -j ACCEPT -m comment --comment prometheus_node_exporter
     echo -e "\n====================\nSaving iptables config\n====================\n"
     service netfilter-persistent save
     echo -e "\nDONE\n"
@@ -105,7 +105,7 @@ while true; do
 
     echo -e "\n====================\nIptables configuration\n====================\n"
     monitor_vm_ip=$(ip_request)
-    iptables_add 'INPUT -p tcp -s '"$monitor_vm_ip"' --dport 9176 -j ACCEPT -m comment --comment prometheus_openvpn_exporter'
+    iptables_add INPUT -p tcp -s "$monitor_vm_ip" --dport 9176 -j ACCEPT -m comment --comment prometheus_openvpn_exporter
     echo -e "\n====================\nSaving iptables config\n====================\n"
     service netfilter-persistent save
     echo -e "\nDONE\n"
@@ -142,7 +142,7 @@ while true; do
 
     echo -e "\n====================\nIptables configuration\n====================\n"
     monitor_vm_ip=$(ip_request)
-    iptables_add 'INPUT -p tcp -s '"$monitor_vm_ip"' --dport 9113 -j ACCEPT -m comment --comment prometheus_nginx_exporter'
+    iptables_add INPUT -p tcp -s "$monitor_vm_ip" --dport 9113 -j ACCEPT -m comment --comment prometheus_nginx_exporter
     echo -e "\n====================\nSaving iptables config\n====================\n"
     service netfilter-persistent save
     echo -e "\nDONE\n"

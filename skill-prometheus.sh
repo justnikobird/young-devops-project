@@ -21,8 +21,8 @@ command_check() {
 }
 
 iptables_add() {
-  if ! iptables -C "$1" &>/dev/null; then
-    iptables -A "$1"
+  if ! iptables -C "$@" &>/dev/null; then
+    iptables -A "$@"
   fi
 }
 
@@ -53,12 +53,12 @@ while true; do
 done
 
 echo -e "\n====================\nIptables configuration\n====================\n"
-iptables_add 'INPUT -p tcp --dport 9090 -j ACCEPT -m comment --comment prometheus'
-iptables_add 'INPUT -p tcp --dport 9093 -j ACCEPT -m comment --comment prometheus_alertmanager'
-iptables_add 'OUTPUT -p tcp --dport 587 -j ACCEPT -m comment --comment smtp'
-iptables_add 'OUTPUT -p tcp -d '"$private_net"' --dport 9100 -j ACCEPT -m comment --comment prometheus_node_exporter'
-iptables_add 'OUTPUT -p tcp -d '"$private_net"' --dport 9176 -j ACCEPT -m comment --comment prometheus_openvpn_exporter'
-iptables_add 'OUTPUT -p tcp -d '"$private_net"' --dport 9113 -j ACCEPT -m comment --comment prometheus_nginx_exporter'
+iptables_add INPUT -p tcp --dport 9090 -j ACCEPT -m comment --comment prometheus
+iptables_add INPUT -p tcp --dport 9093 -j ACCEPT -m comment --comment prometheus_alertmanager
+iptables_add OUTPUT -p tcp --dport 587 -j ACCEPT -m comment --comment smtp
+iptables_add OUTPUT -p tcp -d "$private_net" --dport 9100 -j ACCEPT -m comment --comment prometheus_node_exporter
+iptables_add OUTPUT -p tcp -d "$private_net" --dport 9176 -j ACCEPT -m comment --comment prometheus_openvpn_exporter
+iptables_add OUTPUT -p tcp -d "$private_net" --dport 9113 -j ACCEPT -m comment --comment prometheus_nginx_exporter
 echo -e "\n====================\nSaving iptables config\n====================\n"
 service netfilter-persistent save
 echo -e "\nDONE\n"

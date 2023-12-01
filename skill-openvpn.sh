@@ -21,15 +21,14 @@ command_check() {
 }
 
 iptables_add() {
-  if $2 == nat; then
-    if ! iptables -t nat -C "$1" &>/dev/null; then
-      iptables -t nat -A "$1"
-    fi
+  if ! iptables -C "$@" &>/dev/null; then
+    iptables -A "$@"
   fi
-  if $2 == standart; then
-    if ! iptables -C "$1" &>/dev/null; then
-      iptables -A "$1"
-    fi
+}
+
+iptables_nat_add() {
+  if ! iptables -t nat -C "$@" &>/dev/null; then
+    iptables -t nat -A "$@"
   fi
 }
 
@@ -154,15 +153,15 @@ while true; do
     done
 
     # OpenVPN
-    iptables_add 'INPUT -i '"$eth"' -m state --state NEW -p '"$proto"' --dport '"$port"' -j ACCEPT -m comment --comment openvpn' standart
+    iptables_add INPUT -i "$eth" -m state --state NEW -p "$proto" --dport "$port" -j ACCEPT -m comment --comment openvpn
     # Allow TUN interfaces connections to OpenVPN server
-    iptables_add 'INPUT -i tun+ -j ACCEPT -m comment --comment openvpn' standart
+    iptables_add INPUT -i tun+ -j ACCEPT -m comment --comment openvpn
     # Allow TUN interfaces connections to be forwarded through interfaces
-    iptables_add 'FORWARD -i tun+ -j ACCEPT -m comment --comment openvpn' standart
-    iptables_add 'FORWARD -i tun+ -o '"$eth"' -m state --state RELATED,ESTABLISHED -j ACCEPT -m comment --comment openvpn' standart
-    iptables_add 'FORWARD -i '"$eth"' -o tun+ -m state --state RELATED,ESTABLISHED -j ACCEPT -m comment --comment openvpn' standart
+    iptables_add FORWARD -i tun+ -j ACCEPT -m comment --comment openvpn
+    iptables_add FORWARD -i tun+ -o "$eth" -m state --state RELATED,ESTABLISHED -j ACCEPT -m comment --comment openvpn
+    iptables_add FORWARD -i "$eth" -o tun+ -m state --state RELATED,ESTABLISHED -j ACCEPT -m comment --comment openvpn
     # NAT the VPN client traffic to the interface
-    iptables_add 'POSTROUTING -s 10.8.0.0/24 -o '"$eth"' -j MASQUERADE -m comment --comment openvpn' nat
+    iptables_nat_add POSTROUTING -s 10.8.0.0/24 -o "$eth" -j MASQUERADE -m comment --comment openvpn
     echo -e "\n====================\nSaving iptables config\n====================\n"
     service netfilter-persistent save
     echo -e "\nDONE\n"

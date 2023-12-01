@@ -26,8 +26,8 @@ command_check() {
 }
 
 iptables_add() {
-  if ! iptables -C "$1" &>/dev/null; then
-    iptables -A "$1"
+  if ! iptables -C "$@" &>/dev/null; then
+    iptables -A "$@"
   fi
 }
 
@@ -211,28 +211,28 @@ while true; do
   read -r -n 1 -p "Current ssh session may drop! To continue you have to relogin to this host via 1870 ssh-port and run this script again. Are you ready? (y|n) " yn
   case $yn in
   [Yy]*) #---DNS---
-    iptables_add 'OUTPUT -p tcp --dport 53 -j ACCEPT -m comment --comment dns'
-    iptables_add 'OUTPUT -p udp --dport 53 -j ACCEPT -m comment --comment dns'
+    iptables_add OUTPUT -p tcp --dport 53 -j ACCEPT -m comment --comment dns
+    iptables_add OUTPUT -p udp --dport 53 -j ACCEPT -m comment --comment dns
     #---NTP---
-    iptables_add 'OUTPUT -p udp --dport 123 -j ACCEPT -m comment --comment ntp'
+    iptables_add OUTPUT -p udp --dport 123 -j ACCEPT -m comment --comment ntp
     #---REPO---
-    iptables_add 'OUTPUT -p tcp --dport 1111 -j ACCEPT -m comment --comment repo.justnikobird.ru'
+    iptables_add OUTPUT -p tcp --dport 1111 -j ACCEPT -m comment --comment repo.justnikobird.ru
     #---ICMP---
-    iptables_add 'OUTPUT -p icmp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT'
-    iptables_add 'INPUT -p icmp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT'
+    iptables_add OUTPUT -p icmp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+    iptables_add INPUT -p icmp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
     #---loopback---
-    iptables_add 'OUTPUT -o lo -j ACCEPT'
-    iptables_add 'INPUT -i lo -j ACCEPT'
+    iptables_add OUTPUT -o lo -j ACCEPT
+    iptables_add INPUT -i lo -j ACCEPT
     #---Input-SSH---
-    iptables_add 'INPUT -p tcp --dport 1870 -j ACCEPT -m comment --comment ssh'
+    iptables_add INPUT -p tcp --dport 1870 -j ACCEPT -m comment --comment ssh
     #---Output-HTTP---
-    iptables_add 'OUTPUT -p tcp -m multiport --dports 443,80 -j ACCEPT'
+    iptables_add OUTPUT -p tcp -m multiport --dports 443,80 -j ACCEPT
     #---ESTABLISHED---
-    iptables_add 'INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT'
-    iptables_add 'OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT'
+    iptables_add INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+    iptables_add OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
     #---INVALID---
-    iptables_add 'OUTPUT -m state --state INVALID -j DROP'
-    iptables_add 'INPUT -m state --state INVALID -j DROP'
+    iptables_add OUTPUT -m state --state INVALID -j DROP
+    iptables_add INPUT -m state --state INVALID -j DROP
     #---Defaul-Drop---
     iptables -P OUTPUT DROP
     iptables -P INPUT DROP
