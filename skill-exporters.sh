@@ -92,7 +92,7 @@ while true; do
     service netfilter-persistent save
     echo -e "\nDONE\n"
     systemctl daemon-reload
-    systemctl start node_exporter.service
+    systemctl restart node_exporter.service
     systemctl enable node_exporter.service
 
     echo -e "\n====================\nNode Exporter listening on port 9100\n====================\n"
@@ -112,7 +112,7 @@ while true; do
     service netfilter-persistent save
     echo -e "\nDONE\n"
     systemctl daemon-reload
-    systemctl start openvpn_exporter.service
+    systemctl restart openvpn_exporter.service
     systemctl enable openvpn_exporter.service
 
     echo -e "\n====================\nOpenvpn Exporter listening on port 9176\n====================\n"

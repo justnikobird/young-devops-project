@@ -50,9 +50,7 @@ while true; do
   [Cc]*)
     systemctl restart systemd-timesyncd.service
     apt-get update
-    if command_check openvpn "Openvpn" just-open-vpn; then
-      systemctl enable openvpn-server@server.service
-    fi
+    command_check openvpn "Openvpn" just-open-vpn
     command_check iptables "Iptables" iptables
     command_check netfilter-persistent "Netfilter-persistent" iptables-persistent
     command_check basename "Basename" coreutils
@@ -169,6 +167,7 @@ while true; do
 
     echo -e "\n====================\nRestarting Open-VPN service...\n====================\n"
     systemctl restart openvpn-server@server.service
+    systemctl enable openvpn-server@server.service
     echo -e "\nDONE\n"
     break
     ;;
