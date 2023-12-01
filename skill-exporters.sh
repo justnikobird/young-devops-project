@@ -64,6 +64,7 @@ while true; do
 
   1)
     echo -e "\n====================\nNode Exporter Installing...\n====================\n"
+    systemctl restart systemd-timesyncd.service
     apt-get update
     apt-get install -y just-node-exporter
 
@@ -100,6 +101,7 @@ while true; do
 
   2)
     echo -e "\n====================\nOpenvpn Exporter Installing...\n====================\n"
+    systemctl restart systemd-timesyncd.service
     apt-get update
     apt-get install -y just-open-vpn-exporter
 
@@ -120,6 +122,7 @@ while true; do
   3)
     echo -e "\n====================\nBefore install configure Nginx /stub_status location on 8080 port\n====================\n"
     echo -e "\n====================\nNginx Exporter Installing...\n====================\n"
+    systemctl restart systemd-timesyncd.service
     apt-get update
     apt-get install -y just-nginx-exporter
 
@@ -147,7 +150,7 @@ while true; do
     service netfilter-persistent save
     echo -e "\nDONE\n"
     systemctl daemon-reload
-    systemctl start prometheus-nginx-exporter.service
+    systemctl restart prometheus-nginx-exporter.service
     systemctl enable prometheus-nginx-exporter.service
 
     echo -e "\n====================\nNginx Exporter listening on port 9113\n====================\n"

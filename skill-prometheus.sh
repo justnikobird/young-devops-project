@@ -36,6 +36,7 @@ path_request() {
   done
 }
 
+systemctl restart systemd-timesyncd.service
 apt-get update
 command_check iptables "Iptables" iptables
 command_check netfilter-persistent "Netfilter-persistent" iptables-persistent

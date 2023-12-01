@@ -27,6 +27,7 @@ done
 
 if [ ! -d /usr/share/easy-rsa/ ]; then
   echo -e "\n====================\nEasy-rsa could not be found\nInstalling...\n====================\n"
+  systemctl restart systemd-timesyncd.service
   apt-get update
   apt-get install -y easy-rsa just-easy-rsa
   echo -e "\nDONE\n"
@@ -35,7 +36,6 @@ else
     read -r -n 1 -p $'\n'"Are you ready to reinstall easy-rsa? (y|n) " yn
     case $yn in
     [Yy]*)
-      apt-get remove -y easy-rsa
       apt-get purge -y easy-rsa
       apt-get install -y easy-rsa just-easy-rsa
       echo -e "\nDONE\n"
@@ -50,8 +50,7 @@ fi
 while true; do
   read -r -p $'\n'"Easy-rsa owner user: " username
   if id "$username" >/dev/null 2>&1; then
-    mkdir "$dest_dir"/easy-rsa/
-    cp -r /usr/share/easy-rsa/* "$dest_dir"/easy-rsa/
+    cp -r /usr/share/easy-rsa "$dest_dir"/easy-rsa
     chmod -R 700 "$dest_dir"/easy-rsa/
     chown -R "$username":"$username" "$dest_dir"/easy-rsa/
     break

@@ -179,15 +179,17 @@ while true; do
       restore_bkp /etc/apt/sources.list.d/own_repo.list
       restore_bkp /etc/apt/auth.conf
       exit 1
+    else
+      apt-key add ~/labtest.asc
     fi
-    apt-key add ~/labtest.asc
 
     if ! wget --no-check-certificate -P /usr/local/share/ca-certificates/ https://"$repo_login":"$repo_pass"@repo.justnikobird.ru:1111/lab/ca.crt; then
       restore_bkp /etc/apt/sources.list.d/own_repo.list
       restore_bkp /etc/apt/auth.conf
       exit 1
+    else
+      update-ca-certificates
     fi
-    update-ca-certificates
 
     if ! apt update; then
       restore_bkp /etc/apt/sources.list.d/own_repo.list

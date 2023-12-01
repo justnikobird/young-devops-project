@@ -48,6 +48,7 @@ while true; do
   read -r -n 1 -p "Continue or Skip? (c|s) " cs
   case $cs in
   [Cc]*)
+    systemctl restart systemd-timesyncd.service
     apt-get update
     if command_check openvpn "Openvpn" just-open-vpn; then
       systemctl enable openvpn-server@server.service
