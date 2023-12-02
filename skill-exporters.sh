@@ -46,6 +46,8 @@ path_request() {
   done
 }
 
+systemctl restart systemd-timesyncd.service
+apt-get update
 command_check iptables "Iptables" iptables
 command_check netfilter-persistent "Netfilter-persistent" iptables-persistent
 command_check basename "Basename" coreutils
@@ -64,8 +66,7 @@ while true; do
 
   1)
     echo -e "\n====================\nNode Exporter Installing...\n====================\n"
-    systemctl restart systemd-timesyncd.service
-    apt-get update
+
     apt-get install -y just-node-exporter
 
     cert_path=$(path_request certificate)
@@ -101,8 +102,7 @@ while true; do
 
   2)
     echo -e "\n====================\nOpenvpn Exporter Installing...\n====================\n"
-    systemctl restart systemd-timesyncd.service
-    apt-get update
+
     apt-get install -y just-open-vpn-exporter
 
     echo -e "\n====================\nIptables configuration\n====================\n"
@@ -122,8 +122,7 @@ while true; do
   3)
     echo -e "\n====================\nBefore install configure Nginx /stub_status location on 8080 port\n====================\n"
     echo -e "\n====================\nNginx Exporter Installing...\n====================\n"
-    systemctl restart systemd-timesyncd.service
-    apt-get update
+
     apt-get install -y just-nginx-exporter
 
     cert_path=$(path_request certificate)
