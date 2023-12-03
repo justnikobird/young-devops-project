@@ -15,7 +15,7 @@ command_check() {
 
 path_request() {
   while true; do
-    read -r -e -p $'\n'"Please input valid path to ${1}: " path
+    read -r -e -p $'\n'"Please input full valid path to ${1}: " path
     if [ -f "$path" ]; then
       echo "$path"
       break
@@ -83,14 +83,16 @@ echo '{
 }' >/etc/aptly.conf
 
 if aptly repo create -comment="lab repo" -component="main" -distribution="focal" lab; then
-  package_path=$(path_request "first package")
+  package_path=$(path_request "first package (architecture is all or amd64)")
   if ! aptly repo add lab "$package_path"; then
     exit 1
   fi
 else
   exit 1
 fi
+echo -e "\n====================\nLab Repo Successfully Created\n====================\n"
 
+echo -e "\n====================\nGPG Key Generating...\n====================\n"
 rngd -r /dev/urandom
 rngd_check=$?
 if [ $rngd_check -eq 0 ] || [ $rngd_check -eq 10 ]; then
@@ -102,13 +104,12 @@ if [ $rngd_check -eq 0 ] || [ $rngd_check -eq 10 ]; then
 else
   exit 1
 fi
+echo -e "\nDONE\n"
 
 aptly publish repo lab filesystem:lab:lab
-
 gpg --export --armor >/var/www/aptly/lab/pubtest.asc
-
-ca_crt=$(path_request "ca certificate")
-cp "$ca_crt" /var/www/aptly/lab/
+cp "$(path_request "ca certificate")" /var/www/aptly/lab/ca.crt
+echo -e "\n====================\nLab Repo Successfully Published\n====================\n"
 
 echo -e "\n====================\nNginx Configuration...\n====================\n"
 
@@ -124,7 +125,6 @@ key_file=$(basename "$server_key")
 
 read -r -p $'\n\n'"login for ${repo_name} (default nikolay): " repo_login
 read -r -p "password for ${repo_name} (default Sm1rn0V187187): " -s repo_pass
-
 htpasswd -nbB -C 10 "$repo_login" "$repo_pass" >>/etc/nginx/conf.d/.htpasswd
 
 echo '
@@ -155,10 +155,11 @@ server {
                 deny all;
         }
 }' >/etc/nginx/sites-available/default
+echo -e "\nDONE\n"
 
 echo -e "\n====================\nIptables configuration\n====================\n"
 iptables_add INPUT -p tcp --dport 1111 -j ACCEPT -m comment --comment repo_nginx
-echo -e "\n====================\nSaving iptables config\n====================\n"
+echo -e "\n====================\nSaving iptables config...\n====================\n"
 service netfilter-persistent save
 echo -e "\nDONE\n"
 
