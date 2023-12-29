@@ -3,13 +3,13 @@
 # активируем опцию, которая прерывает выполнение скрипта, если любая команда завершается с ненулевым статусом
 set -e
 
-# проверяем, запущен ли скрипт от пользователя root
+# проверим, запущен ли скрипт от пользователя root
 if [[ "${UID}" -ne 0 ]]; then
   echo -e "You need to run this script as root!\nPlease apply 'sudo su root' and add your host-key to /root/.ssh/authorized_keys before run this script!"
   exit 1
 fi
 
-# проверяем, загружены ли открытые ssh-ключи у пользователся root
+# проверим, загружены ли открытые ssh-ключи у пользователя root
 if [ ! -f /root/.ssh/authorized_keys ]; then
   echo -e "\n====================\nFile /root/.ssh/authorized_keys not found!\n====================\n"
   exit 1
@@ -52,18 +52,18 @@ restore_bkp() {
       mv "$1".bkp "$1"
     fi
   else
-    rm "$1"
+    echo -e "\nCan't find backup file!\n"
   fi
 }
 
-# настраиваем часовой пояс
+# настроим часовой пояс
 echo -e "\n====================\nSetting timezone\n===================="
 timedatectl set-timezone Europe/Moscow
 systemctl restart systemd-timesyncd.service
 timedatectl
 echo -e "\nDONE\n"
 
-# устанавливаем все необходимые пакеты используя функцию command_check
+# установим все необходимые пакеты используя функцию command_check
 apt-get update
 command_check wget "Wget" wget
 command_check iptables "Iptables" iptables
@@ -71,26 +71,26 @@ command_check netfilter-persistent "Netfilter-persistent" iptables-persistent
 command_check openssl "Openssl" openssl
 command_check update-ca-certificates "Ca-certificates" ca-certificates
 
-# проверяем наличие конфигурационного файла ssh
+# проверим наличие конфигурационного файла ssh
 if [ ! -f /etc/ssh/sshd_config ]; then
   echo -e "\n====================\nFile /etc/ssh/sshd_config not found!\n====================\n"
   exit 1
 fi
 
-# проверяем наличие конфигурационного файла grub
+# проверим наличие конфигурационного файла grub
 if [ ! -f /etc/default/grub ]; then
   echo -e "\n====================\nFile /etc/default/grub not found!\n====================\n"
   exit 1
 fi
 
-# создаем нового пользователя
+# создадим нового пользователя
 echo -e "\n====================\nNew user config\n===================="
 
 while true; do
   read -r -n 1 -p "Continue or Skip? (c|s) " cs
   case $cs in
   [Cc]*)
-    # запрашиваем имя пользователя и проверяем наличие пользователя с веденным именем в системе
+    # запросим имя пользователя и проверим наличие его в системе
     while true; do
       read -r -p $'\n'"new username: " username
       if id "$username" >/dev/null 2>&1; then
@@ -100,10 +100,10 @@ while true; do
       fi
     done
 
-    #запрашиваем пароль для нового пользователя
+    #запросим пароль для нового пользователя
     read -r -p "new password: " -s password
 
-    #создаем нового пользователя и переносим ssh-ключи
+    #создадим нового пользователя и перенесем ssh-ключи
     useradd -p "$(openssl passwd -1 "$password")" "$username" -s /bin/bash -m -G sudo
     cp -r /root/.ssh/ /home/"$username"/ && chown -R "$username":"$username" /home/"$username"/.ssh/
     echo -e "\n\nDONE\n"
@@ -117,7 +117,7 @@ while true; do
   esac
 done
 
-# настраиваем ssh
+# настроим ssh
 echo -e "\n====================\nEdit sshd_config file\n===================="
 
 while true; do
@@ -143,7 +143,7 @@ while true; do
   esac
 done
 
-# выключаем ipv6
+# выключим ipv6
 echo -e "\n====================\nDisabling ipv6\n===================="
 
 while true; do
@@ -166,7 +166,7 @@ while true; do
   esac
 done
 
-# подключаем репозиторий
+# подключим репозиторий
 echo -e "\n====================\nRepo config\n===================="
 
 while true; do
@@ -174,31 +174,31 @@ while true; do
   echo -e "\n"
   case $cs in
   [Cc]*)
-    # выполняем backup файлов с помощью функции bkp
+    # выполним backup файлов с помощью функции bkp
     bkp /etc/apt/sources.list.d/own_repo.list
     bkp /etc/apt/auth.conf
 
-    # запрашиваем логин и пароль для подключения к репозиторию
+    # запросим логин и пароль для подключения к репозиторию
     read -r -p $'\n\n'"login for repo.justnikobird.ru (default nikolay): " repo_login
     read -r -p "password for repo.justnikobird.ru (default password): " -s repo_pass
 
-    # проверяем файл /etc/apt/sources.list.d/own_repo.list на наличие записи о репозитории, и в случае ее отсутствия добавляем
+    # проверим файл /etc/apt/sources.list.d/own_repo.list на наличие записи о репозитории, и в случае ее отсутствия добавим
     if ! grep -Fxq "deb https://repo.justnikobird.ru:1111/lab focal main" /etc/apt/sources.list.d/own_repo.list &>/dev/null; then
       echo "deb https://repo.justnikobird.ru:1111/lab focal main" >>/etc/apt/sources.list.d/own_repo.list
     fi
 
-    # проверяем файл /etc/apt/auth.conf на наличие записей о репозитории, и в случае их отсутствия добавляем
+    # проверим файл /etc/apt/auth.conf на наличие записей о репозитории, и в случае их отсутствия добавим
     if ! grep -Fxq "machine repo.justnikobird.ru:1111" /etc/apt/auth.conf &>/dev/null; then
       echo -e "machine repo.justnikobird.ru:1111\nlogin $repo_login\npassword $repo_pass" >>/etc/apt/auth.conf
     else
-      # если в файле /etc/apt/auth.conf записи обнаружены, то просим пользователя удалить их
+      # если в файле /etc/apt/auth.conf записи обнаружены, то попросим пользователя удалить их
       echo -e "\n\nrepo.justnikobird.ru has been configured in /etc/apt/auth.conf!\nPlease manually clean configuration or skip this stage."
       restore_bkp /etc/apt/sources.list.d/own_repo.list
       restore_bkp /etc/apt/auth.conf
       exit 1
     fi
 
-    # скачиваем и устанавливаем gpg-ключ от репозитория
+    # скачаем и установим gpg-ключ от репозитория
     if ! wget --no-check-certificate -P ~/ https://"$repo_login":"$repo_pass"@repo.justnikobird.ru:1111/lab/labtest.asc; then
       restore_bkp /etc/apt/sources.list.d/own_repo.list
       restore_bkp /etc/apt/auth.conf
@@ -207,7 +207,7 @@ while true; do
       apt-key add ~/labtest.asc
     fi
 
-    # скачиваем и устанавливаем открытый ключ ca-сертификата от репозитория
+    # скачаем и установим открытый ключ ca-сертификата от репозитория
     if ! wget --no-check-certificate -P /usr/local/share/ca-certificates/ https://"$repo_login":"$repo_pass"@repo.justnikobird.ru:1111/lab/ca.crt; then
       restore_bkp /etc/apt/sources.list.d/own_repo.list
       restore_bkp /etc/apt/auth.conf
@@ -216,7 +216,7 @@ while true; do
       update-ca-certificates
     fi
 
-    # выполняем синхронизацию списков пакетов в системе
+    # выполним синхронизацию списков пакетов в системе
     if ! apt update; then
       restore_bkp /etc/apt/sources.list.d/own_repo.list
       restore_bkp /etc/apt/auth.conf
@@ -234,7 +234,7 @@ while true; do
   esac
 done
 
-# применяем правила iptables
+# настроим iptables
 echo -e "\n====================\nIptables config\n===================="
 while true; do
   read -r -n 1 -p "Current ssh session may drop! To continue you have to relogin to this host via 1870 ssh-port and run this script again. Are you ready? (y|n) " yn
