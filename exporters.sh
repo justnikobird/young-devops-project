@@ -53,14 +53,8 @@ path_request() {
   done
 }
 
-# настроим часовой пояс
-echo -e "\n====================\nSetting timezone\n===================="
-timedatectl set-timezone Europe/Moscow
-systemctl restart systemd-timesyncd.service
-timedatectl
-echo -e "\nDONE\n"
-
 # установим все необходимые пакеты используя функцию command_check
+systemctl restart systemd-timesyncd.service
 apt-get update
 command_check iptables "Iptables" iptables
 command_check netfilter-persistent "Netfilter-persistent" iptables-persistent

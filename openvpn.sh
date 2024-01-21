@@ -57,14 +57,8 @@ while true; do
   case $cs in
   [Cc]*)
 
-    # настроим часовой пояс
-    echo -e "\n====================\nSetting timezone\n===================="
-    timedatectl set-timezone Europe/Moscow
-    systemctl restart systemd-timesyncd.service
-    timedatectl
-    echo -e "\nDONE\n"
-
     # установим все необходимые пакеты используя функцию command_check
+    systemctl restart systemd-timesyncd.service
     apt-get update
     command_check openvpn "Openvpn" just-open-vpn
     command_check iptables "Iptables" iptables
