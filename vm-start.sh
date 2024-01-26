@@ -29,6 +29,18 @@ command_check() {
   fi
 }
 
+# функция, которая запрашивает имя нового пользователя и проверяет его на наличие в системе
+username_request() {
+  while true; do
+      read -r -p $'\n'"new username: " username
+      if id "$username" >/dev/null 2>&1; then
+        echo -e "\nUser $username exists!\n"
+      else
+        return "$username"
+      fi
+    done
+}
+
 # функция, которая проверяет наличие правила в iptables и в случае отсутствия применяет его
 iptables_add() {
   if ! iptables -C "$@" &>/dev/null; then
@@ -90,15 +102,8 @@ while true; do
   read -r -n 1 -p "Continue or Skip? (c|s) " cs
   case $cs in
   [Cc]*)
-    # запросим имя пользователя и проверим наличие его в системе
-    while true; do
-      read -r -p $'\n'"new username: " username
-      if id "$username" >/dev/null 2>&1; then
-        echo -e "\nUser $username exists!\n"
-      else
-        break
-      fi
-    done
+    # запросим имя пользователя используя функцию username_request
+    username=$(username_request)
 
     # запросим пароль для нового пользователя
     read -r -p "new password: " -s password
@@ -107,6 +112,27 @@ while true; do
     useradd -p "$(openssl passwd -1 "$password")" "$username" -s /bin/bash -m -G sudo
     cp -r /root/.ssh/ /home/"$username"/ && chown -R "$username":"$username" /home/"$username"/.ssh/
     echo -e "\n\nDONE\n"
+
+    # корректировка prompt statement
+    echo -e "\n====================\nEdit prompt statement for this user?\n===================="
+
+    while true; do
+      read -r -n 1 -p "Continue or Skip? (c|s) " cs
+      case $cs in
+      [Cc]*)
+        read -r -p $'\n'"vm name: " vm_name
+        echo "PS1=\$\{debian_chroot\:\+\(\$debian_chroot\)\}\\u\@$vm_name\:\\w\\\$ ">>/home/"$vm_name"/.bashrc
+        echo -e "\n\nDONE\n"
+        break
+        ;;
+      [Ss]*)
+        echo -e "\n"
+        break
+        ;;
+      *) echo -e "\nPlease answer C or S!\n" ;;
+      esac
+    done
+
     break
     ;;
   [Ss]*)
