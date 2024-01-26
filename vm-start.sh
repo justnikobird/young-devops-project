@@ -100,10 +100,10 @@ while true; do
       fi
     done
 
-    #запросим пароль для нового пользователя
+    # запросим пароль для нового пользователя
     read -r -p "new password: " -s password
 
-    #создадим нового пользователя и перенесем ssh-ключи
+    # создадим нового пользователя и перенесем ssh-ключи
     useradd -p "$(openssl passwd -1 "$password")" "$username" -s /bin/bash -m -G sudo
     cp -r /root/.ssh/ /home/"$username"/ && chown -R "$username":"$username" /home/"$username"/.ssh/
     echo -e "\n\nDONE\n"
