@@ -47,7 +47,7 @@ systemctl restart systemd-timesyncd.service
 apt-get update
 command_check iptables "Iptables" iptables
 command_check netfilter-persistent "Netfilter-persistent" iptables-persistent
-command_check prometheus "Prometheus" just-prometheus
+command_check prometheus "Prometheus" prometheus-lab
 command_check basename "Basename" coreutils
 command_check htpasswd "Htpasswd" apache2-utils
 
