@@ -60,7 +60,7 @@ while true; do
     # установим все необходимые пакеты используя функцию command_check
     systemctl restart systemd-timesyncd.service
     apt-get update
-    command_check openvpn "Openvpn" just-open-vpn
+    command_check openvpn "Openvpn" openvpn-lab
     command_check iptables "Iptables" iptables
     command_check netfilter-persistent "Netfilter-persistent" iptables-persistent
     command_check basename "Basename" coreutils
