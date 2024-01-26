@@ -113,7 +113,7 @@ while true; do
     cp -r /root/.ssh/ /home/"$username"/ && chown -R "$username":"$username" /home/"$username"/.ssh/
     echo -e "\n\nDONE\n"
 
-    # корректировка prompt statement
+    # выполним корректировку prompt statement
     echo -e "\n====================\nEdit prompt statement for this user?\n===================="
 
     while true; do
