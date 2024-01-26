@@ -96,7 +96,7 @@ while true; do
     chown node_exporter:node_exporter /opt/node_exporter/"$cert_file"
     chown node_exporter:node_exporter /opt/node_exporter/"$key_file"
 
-    # запросим данные для авторизации и запишим их в конфигурационный файл
+    # запросим данные для авторизации и запишем их в конфигурационный файл
     read -r -p $'\n'"Node Exporter username: " username
     read -r -p $'\n'"Node Exporter password: " -s password
     echo -e "tls_server_config:\n  cert_file: $cert_file\n  key_file: $key_file\n\nbasic_auth_users:\n  $username: '$(htpasswd -nbB -C 10 admin "$password" | grep -o "\$.*")'" >/opt/node_exporter/web.yml
@@ -166,7 +166,7 @@ while true; do
     chown prometheus:prometheus "$new_cert_path"
     chown prometheus:prometheus "$new_key_path"
 
-    # запишим данные о сертификате и ключе в конфигурационный файл
+    # запишем данные о сертификате и ключе в конфигурационный файл
     echo 'ARGS="-web.secured-metrics -web.ssl-server-cert '"$new_cert_path"' -web.ssl-server-key '"$new_key_path"'' >/opt/nginx_exporter/prometheus-nginx-exporter
 
     # настроим iptables
