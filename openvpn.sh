@@ -65,11 +65,6 @@ while true; do
     command_check netfilter-persistent "Netfilter-persistent" iptables-persistent
     command_check basename "Basename" coreutils
 
-#    if [ ! -d "/etc/openvpn/server/" ]; then
-#      echo -e "\n====================\nDirectory /etc/openvpn/server/ doesn't exist!\n====================\n"
-#      exit 1
-#    fi
-
     # проверим наличие файла /etc/sysctl.conf в системе
     if [ ! -f /etc/sysctl.conf ]; then
       echo "File /etc/sysctl.conf not found!"
