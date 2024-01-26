@@ -34,7 +34,7 @@ if [ ! -d /usr/share/easy-rsa/ ]; then
   echo -e "\n====================\nEasy-rsa could not be found\nInstalling...\n====================\n"
   systemctl restart systemd-timesyncd.service
   apt-get update
-  apt-get install -y easy-rsa just-easy-rsa
+  apt-get install -y easy-rsa-lab
   echo -e "\nDONE\n"
 else
   while true; do
@@ -42,7 +42,7 @@ else
     case $yn in
     [Yy]*)
       apt-get purge -y easy-rsa
-      apt-get install -y easy-rsa just-easy-rsa
+      apt-get install -y easy-rsa-lab
       echo -e "\nDONE\n"
       break
       ;;
