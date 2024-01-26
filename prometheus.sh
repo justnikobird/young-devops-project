@@ -111,3 +111,4 @@ systemctl enable prometheus.service
 systemctl restart prometheus-alertmanager.service
 systemctl enable prometheus-alertmanager.service
 echo -e "\nOK\n"
+exit 0

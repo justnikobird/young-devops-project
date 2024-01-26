@@ -196,3 +196,4 @@ systemctl enable nginx.service
 
 echo -e "\n====================\nRepo listening on port 1111\n====================\n"
 echo -e "\nOK\n"
+exit 0

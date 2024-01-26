@@ -94,3 +94,4 @@ systemctl daemon-reload
 systemctl restart grafana-server.service
 systemctl enable grafana-server.service
 echo -e "\nOK\n"
+exit 0
