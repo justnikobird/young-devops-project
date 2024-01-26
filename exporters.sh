@@ -77,8 +77,8 @@ while true; do
   1)
     echo -e "\n====================\nNode Exporter Installing...\n====================\n"
 
-    # установим ранее собранный пакет just-node-exporter
-    apt-get install -y just-node-exporter
+    # установим ранее собранный пакет node-exporter-lab
+    apt-get install -y node-exporter-lab
 
     # запросим пути до файлов сертификата и ключа
     cert_path=$(path_request certificate)
@@ -121,8 +121,8 @@ while true; do
   2)
     echo -e "\n====================\nOpenvpn Exporter Installing...\n====================\n"
 
-    # установим ранее собранный пакет just-open-vpn-exporter
-    apt-get install -y just-open-vpn-exporter
+    # установим ранее собранный пакет openvpn-exporter-lab
+    apt-get install -y openvpn-exporter-lab
 
     # настроим iptables
     echo -e "\n====================\nIptables configuration\n====================\n"
@@ -145,8 +145,8 @@ while true; do
     echo -e "\n====================\nConfigure Nginx /stub_status location on 8080 port before install \n====================\n"
     echo -e "\n====================\nNginx Exporter Installing...\n====================\n"
 
-    # установим ранее собранный пакет just-open-vpn-exporter
-    apt-get install -y just-nginx-exporter
+    # установим ранее собранный пакет nginx-exporter-lab
+    apt-get install -y nginx-exporter-lab
 
     # запросим пути до файлов сертификата и ключа
     cert_path=$(path_request certificate)
