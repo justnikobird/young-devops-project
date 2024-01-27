@@ -32,13 +32,13 @@ command_check() {
 # функция, которая запрашивает имя нового пользователя и проверяет его на наличие в системе
 username_request() {
   while true; do
-      read -r -p $'\n'"new username: " username
-      if id "$username" >/dev/null 2>&1; then
-        echo -e "\nUser $username exists!\n"
-      else
-        return "$username"
-      fi
-    done
+    read -r -p $'\n'"new username: " username
+    if id "$username" >/dev/null 2>&1; then
+      echo -e "\nUser $username exists!\n"
+    else
+      return "$username"
+    fi
+  done
 }
 
 # функция, которая проверяет наличие правила в iptables и в случае отсутствия применяет его
@@ -120,8 +120,10 @@ while true; do
       read -r -n 1 -p "Continue or Skip? (c|s) " cs
       case $cs in
       [Cc]*)
+        # запросим имя vm
         read -r -p $'\n'"vm name: " vm_name
-        echo "PS1=\$\{debian_chroot\:\+\(\$debian_chroot\)\}\\u\@$vm_name\:\\w\\\$ ">>/home/"$vm_name"/.bashrc
+        # выполним корректировку prompt statement
+        echo "PS1=\$\{debian_chroot\:\+\(\$debian_chroot\)\}\\u\@$vm_name\:\\w\\\$ " >>/home/"$username"/.bashrc
         echo -e "\n\nDONE\n"
         break
         ;;
