@@ -122,8 +122,10 @@ while true; do
       [Cc]*)
         # запросим имя vm
         read -r -p $'\n'"vm name: " vm_name
+
         # выполним корректировку prompt statement
         echo "PS1='\${debian_chroot:+(\$debian_chroot)}\\u@$vm_name:\\w\\\$ '" >>/home/"$username"/.bashrc
+
         echo -e "\n\nDONE\n"
         break
         ;;
