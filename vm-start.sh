@@ -36,7 +36,7 @@ username_request() {
     if id "$username" >/dev/null 2>&1; then
       echo -e "\nUser $username exists!\n"
     else
-      return "$username"
+      break
     fi
   done
 }
@@ -102,8 +102,8 @@ while true; do
   read -r -n 1 -p "Continue or Skip? (c|s) " cs
   case $cs in
   [Cc]*)
-    # запросим имя пользователя используя функцию username_request
-    username=$(username_request)
+    # запросим имя пользователя используя функцию username_request (функция создаст глобальную переменную "username")
+    username_request
 
     # запросим пароль для нового пользователя
     read -r -p "new password: " -s password
