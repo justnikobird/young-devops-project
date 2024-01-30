@@ -209,8 +209,8 @@ while true; do
     bkp /etc/apt/auth.conf
 
     # запросим логин и пароль для подключения к репозиторию
-    read -r -p $'\n\n'"login for repo.justnikobird.ru (default nikolay): " repo_login
-    read -r -p "password for repo.justnikobird.ru (default password): " -s repo_pass
+    read -r -p $'\n\n'"login for repo.justnikobird.ru: " repo_login
+    read -r -p "password for repo.justnikobird.ru: " -s repo_pass
 
     # проверим файл /etc/apt/sources.list.d/own_repo.list на наличие записи о репозитории, и в случае ее отсутствия добавим
     if ! grep -Fxq "deb https://repo.justnikobird.ru:1111/lab focal main" /etc/apt/sources.list.d/own_repo.list &>/dev/null; then
