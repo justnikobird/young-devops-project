@@ -122,7 +122,7 @@ echo -e "\nDONE\n"
 aptly publish repo lab filesystem:lab:lab
 
 # экспортируем открытый gpg-ключ на web-страницу репозитория
-gpg --export --armor >/var/www/aptly/lab/pubtest.asc
+gpg --export --armor >/var/www/aptly/lab/labtest.asc
 
 # экспортируем открытый ключ ca на web-страницу репозитория
 cp "$(path_request "ca certificate")" /var/www/aptly/lab/ca.crt
