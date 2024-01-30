@@ -214,12 +214,12 @@ while true; do
 
     # проверим файл /etc/apt/sources.list.d/own_repo.list на наличие записи о репозитории, и в случае ее отсутствия добавим
     if ! grep -Fxq "deb https://repo.justnikobird.ru:1111/lab focal main" /etc/apt/sources.list.d/own_repo.list &>/dev/null; then
-      echo "deb https://repo.justnikobird.ru:1111/lab focal main" >>/etc/apt/sources.list.d/own_repo.list
+      echo "deb https://repo.justnikobird.ru:1111/lab focal main" | tee -a /etc/apt/sources.list.d/own_repo.list >/dev/null
     fi
 
     # проверим файл /etc/apt/auth.conf на наличие записей о репозитории, и в случае их отсутствия добавим
     if ! grep -Fxq "machine repo.justnikobird.ru:1111" /etc/apt/auth.conf &>/dev/null; then
-      echo -e "machine repo.justnikobird.ru:1111\nlogin $repo_login\npassword $repo_pass" >>/etc/apt/auth.conf
+      echo -e "machine repo.justnikobird.ru:1111\nlogin $repo_login\npassword $repo_pass" | tee -a /etc/apt/auth.conf >/dev/null
     else
       # если в файле /etc/apt/auth.conf записи обнаружены, то попросим пользователя удалить их
       echo -e "\n\nrepo.justnikobird.ru has been configured in /etc/apt/auth.conf!\nPlease manually clean configuration or skip this stage."
