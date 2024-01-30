@@ -133,7 +133,7 @@ echo -e "\n====================\nLab Repo Successfully Published\n==============
 echo -e "\n====================\nNginx Configuration...\n====================\n"
 
 # запросим доменное имя репозитория
-read -r -p $'\n'"repo domain name (default repo.justnikobird.ru): " repo_name
+read -r -p $'\n'"repo domain name (example repo.justnikobird.ru): " repo_name
 
 # запросим путь до сертификата с помощью функции path_request и перенес файл в рабочую директорию nginx
 server_crt=$(path_request certificate)
@@ -146,8 +146,8 @@ cp "$server_key" /etc/nginx/
 key_file=$(basename "$server_key")
 
 # запросим логин и пароль для нового репозитория
-read -r -p $'\n\n'"login for ${repo_name} (default nikolay): " repo_login
-read -r -p "password for ${repo_name} (default password): " -s repo_pass
+read -r -p $'\n\n'"login for ${repo_name}: " repo_login
+read -r -p "password for ${repo_name}: " -s repo_pass
 
 # сгенерируем хэш пароля
 htpasswd -nbB -C 10 "$repo_login" "$repo_pass" >>/etc/nginx/conf.d/.htpasswd
