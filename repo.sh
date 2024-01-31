@@ -47,7 +47,7 @@ command_check bzip2 "Bzip2" bzip2
 # настроим aptly
 echo -e "\n====================\nAptly Configuration...\n====================\n"
 
-# проверим на наличие старых файлов aptly (полезно при переустановки)
+# проверим на наличие старых файлов aptly (полезно при переустановке)
 if [ -f /tmp/aptly_1.5.0_linux_amd64.tar.gz ] || [ -d /tmp/aptly_1.5.0_linux_amd64 ]; then
   rm -rf /tmp/aptly_1.5.0_linux_amd64*
 fi
