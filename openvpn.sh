@@ -120,11 +120,11 @@ while true; do
       case $proto in
       tcp)
         # в случае выбора tcp внесем настройки в конфигурационные файлы openvpn
-        sed -r -i 's/\(^proto\sudp$\)/\;\1/' /etc/openvpn/server/server.conf
-        sed -r -i 's/^\;\(proto\stcp$\)/\1/' /etc/openvpn/server/server.conf
-        sed -r -i 's/\(^proto\sudp$\)/\;\1/' /etc/openvpn/clients_config/confiles/base.conf
-        sed -r -i 's/^\;\(proto\stcp$\)/\1/' /etc/openvpn/clients_config/confiles/base.conf
-        sed -r -i 's/(^explicit-exit-notify\s1$\)/\;\1/' /etc/openvpn/server/server.conf
+        sed -i 's/\(^proto\sudp$\)/\;\1/' /etc/openvpn/server/server.conf
+        sed -i 's/^\;\(proto\stcp$\)/\1/' /etc/openvpn/server/server.conf
+        sed -i 's/\(^proto\sudp$\)/\;\1/' /etc/openvpn/clients_config/confiles/base.conf
+        sed -i 's/^\;\(proto\stcp$\)/\1/' /etc/openvpn/clients_config/confiles/base.conf
+        sed -i 's/(^explicit-exit-notify\s1$\)/\;\1/' /etc/openvpn/server/server.conf
         break
         ;;
       udp)
