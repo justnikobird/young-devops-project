@@ -95,9 +95,9 @@ while true; do
     echo -e "\n====================\nTls-crypt-key generated /etc/openvpn/server/ta.key\n====================\n"
 
     # внесем изменения в конфигурационный файл open-vpn
-    sed -i 's/(^ca\s).*$/\1'"$ca_crt_file"'/' /etc/openvpn/server/server.conf
-    sed -i 's/(^cert\s).*$/\1'"$server_crt_file"'/' /etc/openvpn/server/server.conf
-    sed -i 's/(^key\s).*$/\1'"$server_key_file"'/' /etc/openvpn/server/server.conf
+    sed -r -i 's/(^ca\s).*$/\1'"$ca_crt_file"'/' /etc/openvpn/server/server.conf
+    sed -r -i 's/(^cert\s).*$/\1'"$server_crt_file"'/' /etc/openvpn/server/server.conf
+    sed -r -i 's/(^key\s).*$/\1'"$server_key_file"'/' /etc/openvpn/server/server.conf
 
     # активируем функцию маршрутизации
     echo -e "\n====================\nIp forward configing\n====================\n"
@@ -120,11 +120,11 @@ while true; do
       case $proto in
       tcp)
         # в случае выбора tcp внесем настройки в конфигурационные файлы openvpn
-        sed -i 's/\(^proto\sudp$\)/\;\1/' /etc/openvpn/server/server.conf
-        sed -i 's/^\;\(proto\stcp$\)/\1/' /etc/openvpn/server/server.conf
-        sed -i 's/\(^proto\sudp$\)/\;\1/' /etc/openvpn/clients_config/confiles/base.conf
-        sed -i 's/^\;\(proto\stcp$\)/\1/' /etc/openvpn/clients_config/confiles/base.conf
-        sed -i 's/(^explicit-exit-notify\s1$\)/\;\1/' /etc/openvpn/server/server.conf
+        sed -r -i 's/\(^proto\sudp$\)/\;\1/' /etc/openvpn/server/server.conf
+        sed -r -i 's/^\;\(proto\stcp$\)/\1/' /etc/openvpn/server/server.conf
+        sed -r -i 's/\(^proto\sudp$\)/\;\1/' /etc/openvpn/clients_config/confiles/base.conf
+        sed -r -i 's/^\;\(proto\stcp$\)/\1/' /etc/openvpn/clients_config/confiles/base.conf
+        sed -r -i 's/(^explicit-exit-notify\s1$\)/\;\1/' /etc/openvpn/server/server.conf
         break
         ;;
       udp)
@@ -147,8 +147,8 @@ while true; do
           break
         else
           # в случае если порт отличается от 1194, внесем изменения в конфигурационный файл
-          sed -i 's/(^port\s).*$/\1'"$port"'/' /etc/openvpn/server/server.conf
-          sed -i 's/(^port\s).*$/\1'"$port"'/' /etc/openvpn/clients_config/confiles/base.conf
+          sed -r -i 's/(^port\s).*$/\1'"$port"'/' /etc/openvpn/server/server.conf
+          sed -r -i 's/(^port\s).*$/\1'"$port"'/' /etc/openvpn/clients_config/confiles/base.conf
           break
         fi
       fi
@@ -160,7 +160,7 @@ while true; do
 
     # запросим hostname или ip openvpn сервера и занесем в конфигурационный файл
     read -r -p $'\n'"The hostname or IP of the server: " host
-    sed -i 's/(^remote\s).*$/\1'"$host"' '"$port"'/' /etc/openvpn/clients_config/confiles/base.conf
+    sed -r -i 's/(^remote\s).*$/\1'"$host"' '"$port"'/' /etc/openvpn/clients_config/confiles/base.conf
 
     echo -e "\n====================\nIptables configuration\n====================\n"
 
