@@ -41,7 +41,7 @@ iptables_nat_add() {
 # функция, которая проверяет валидность пути в linux-системе
 path_request() {
   while true; do
-    read -r -e -p $'\n'"Please input valid path to ${1}: " path
+    read -r -e -p $'\n\n'"Please input valid path to ${1}: " path
     if [ -f "$path" ]; then
       echo "$path"
       break
@@ -137,7 +137,7 @@ while true; do
 
     # запросим у оператора ввести порт, через который будет работать openvpn
     while true; do
-      read -r -n 4 -p $'\n'"OpenVPN port number (default 1194): " port
+      read -r -n 4 -p $'\n\n'"OpenVPN port number (default 1194): " port
       re='^[0-9]+$'
       if ! [[ $port =~ $re ]]; then
         echo "error: Not a number" >&2
