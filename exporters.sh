@@ -179,8 +179,8 @@ while true; do
 
     # перезагрузим nginx-exporter-сервис
     systemctl daemon-reload
-    systemctl restart prometheus-nginx-exporter.service
-    systemctl enable prometheus-nginx-exporter.service
+    systemctl restart nginx_exporter.service
+    systemctl enable nginx_exporter.service
 
     echo -e "\n====================\nNginx Exporter listening on port 9113\n====================\n"
     echo -e "\nOK\n"
