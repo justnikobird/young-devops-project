@@ -34,7 +34,7 @@ iptables_add() {
 # функция, которая проверяет корректность введения ip-адреса
 ip_request() {
   while true; do
-    read -r -p $'\n'"Enter monitov vm ip (format 10.0.0.6): " ip
+    read -r -p $'\n'"Enter monitor vm ip (format 10.0.0.6): " ip
     if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
       echo "$ip"
       break
