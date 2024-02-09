@@ -91,8 +91,8 @@ while true; do
     # переместим файлы ключа и сертификата в рабочую директорию программы и поменяем права на владение
     cp "$cert_path" /opt/node_exporter/
     cp "$key_path" /opt/node_exporter/
-    chmod 744 /opt/node_exporter/"$cert_file"
-    chmod 744 /opt/node_exporter/"$key_file"
+    chmod 640 /opt/node_exporter/"$cert_file"
+    chmod 640 /opt/node_exporter/"$key_file"
     chown node_exporter:node_exporter /opt/node_exporter/"$cert_file"
     chown node_exporter:node_exporter /opt/node_exporter/"$key_file"
 
@@ -161,10 +161,10 @@ while true; do
     cp "$key_path" /opt/nginx_exporter/
     new_cert_path="/opt/nginx_exporter/$cert_file"
     new_key_path="/opt/nginx_exporter/$key_file"
-    chmod 744 "$new_cert_path"
-    chmod 744 "$new_key_path"
-    chown prometheus:prometheus "$new_cert_path"
-    chown prometheus:prometheus "$new_key_path"
+    chmod 640 "$new_cert_path"
+    chmod 640 "$new_key_path"
+    chown nginx_exporter:nginx_exporter "$new_cert_path"
+    chown nginx_exporter:nginx_exporter "$new_key_path"
 
     # запишем данные о сертификате и ключе в конфигурационный файл
     echo 'ARGS="-web.secured-metrics -web.ssl-server-cert '"$new_cert_path"' -web.ssl-server-key '"$new_key_path"'' >/opt/nginx_exporter/prometheus-nginx-exporter
