@@ -76,12 +76,6 @@ echo -e "\nDONE\n"
 # выполним настройку HTTPS
 echo -e "\n====================\nHTTPS configuration\n====================\n"
 
-# запросим путь до файла ca-сертификата, перенесем его в рабочую директорию программы и поменяем владельца
-ca_cert_path=$(path_request "ca certificate")
-cp "$ca_cert_path" /etc/prometheus/ca.crt
-chmod 744 /etc/prometheus/ca.crt
-chown prometheus:prometheus /etc/prometheus/ca.crt
-
 # запросим путь до файла сертификата, перенесем его в рабочую директорию программы и поменяем владельца
 cert_path=$(path_request certificate)
 cp "$cert_path" /etc/prometheus/
