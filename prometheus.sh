@@ -103,6 +103,7 @@ sed -r -i '0,/(^.*\susername:\s).*$/s//\1'"$username"'/' /etc/prometheus/prometh
 sed -r -i '0,/(^.*\spassword:\s).*$/s//\1'"$password"'/' /etc/prometheus/prometheus.yml
 sed -r -i '0,/(^.*\sca_file:\s).*$/s//\1'"$cert_file"'/' /etc/prometheus/prometheus.yml
 sed -r -i '0,/(^.*\stargets:\s\[.).*(.\])/s//\1'"$url"':9093\2/' /etc/prometheus/prometheus.yml
+echo "127.0.0.1 $url" >>/etc/hosts
 
 # перезагрузим сервисы prometheus и alertmanager
 echo -e "\nDONE\n"
