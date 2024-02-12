@@ -10,7 +10,7 @@ if [[ "${UID}" -ne 0 ]]; then
 fi
 
 # проверим подключен ли репозиторий
-if [[ ! $(grep -rhE ^deb /etc/apt/sources.list*) == *"deb https://repo-test.justnikobird.ru:1111/lab focal main"* ]]; then
+if [[ ! $(grep -rhE ^deb /etc/apt/sources.list*) == *"deb https://repo.justnikobird.ru:1111/lab focal main"* ]]; then
   echo -e "Lab repo not connected!\nPlease run vm_start.sh script!\n"
   exit 1
 fi
