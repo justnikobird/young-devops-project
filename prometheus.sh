@@ -102,7 +102,7 @@ echo -e "tls_server_config:\n  cert_file: $cert_file\n  key_file: $key_file\n\nb
 sed -r -i '0,/(^.*\susername:\s).*$/s//\1'"$username"'/' /etc/prometheus/prometheus.yml
 sed -r -i '0,/(^.*\spassword:\s).*$/s//\1'"$password"'/' /etc/prometheus/prometheus.yml
 sed -r -i '0,/(^.*\sca_file:\s).*$/s//\1'"$cert_file"'/' /etc/prometheus/prometheus.yml
-sed -r -i '0,/(^.*\stargets:\s).*$/s//\1['"$url"':9093]/' /etc/prometheus/prometheus.yml
+sed -r -i '0,/(^.*\stargets:\s\[.).*(.\])/s//\1'"$url"':9093\2/' /etc/prometheus/prometheus.yml
 
 # перезагрузим сервисы prometheus и alertmanager
 echo -e "\nDONE\n"
