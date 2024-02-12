@@ -35,7 +35,7 @@ iptables_add() {
 ip_request() {
   while true; do
     read -r -p $'\n'"Enter monitor vm ip (format 10.0.0.6): " ip
-    if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+    if [[ $ip =~ ^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$ ]]; then
       echo "$ip"
       break
     fi

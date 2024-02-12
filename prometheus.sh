@@ -94,16 +94,46 @@ chown prometheus:prometheus /etc/prometheus/"$key_file"
 read -r -p $'\n'"Prometheus username: " username
 read -r -p $'\n'"Prometheus password: " -s password
 
-# запросим url для подключения prometheus к alertmanager
-read -r -p $'\n\n'"Prometheus url (format monitor.justnikobird.ru): " url
+# запросим доменное имя для подключения prometheus к alertmanager
+read -r -p $'\n\n'"Prometheus url (format monitor.justnikobird.ru): " domain_name
 
-# запишем настройки в конфигурационные файлы
+# запишем настройки в конфигурационный файл /etc/prometheus/web.yml
 echo -e "tls_server_config:\n  cert_file: $cert_file\n  key_file: $key_file\n\nbasic_auth_users:\n  $username: '$(htpasswd -nbB -C 10 admin "$password" | grep -o "\$.*")'" >/etc/prometheus/web.yml
+
+# внесем изменения в конфигурационный файл /etc/prometheus/prometheus.yml в блок alerting
 sed -r -i '0,/(^.*\susername:\s).*$/s//\1'"$username"'/' /etc/prometheus/prometheus.yml
 sed -r -i '0,/(^.*\spassword:\s).*$/s//\1'"$password"'/' /etc/prometheus/prometheus.yml
 sed -r -i '0,/(^.*\sca_file:\s).*$/s//\1'"$cert_file"'/' /etc/prometheus/prometheus.yml
-sed -r -i '0,/(^.*\stargets:\s\[.).*(.\])/s//\1'"$url"':9093\2/' /etc/prometheus/prometheus.yml
-echo "127.0.0.1 $url" >>/etc/hosts
+sed -r -i '0,/(^.*\stargets:\s\[[^\w\s]).*([^\w\s]\])/s//\1'"$domain_name"':9093\2/' /etc/prometheus/prometheus.yml
+
+# выполним настройку DNS
+echo -e "\n\n====================\DNS configuration\n====================\n"
+
+# закрепим доменное имя prometheus за адресом localhost
+echo "127.0.0.1 $domain_name" >>/etc/hosts
+
+# запросим у пользователя строки для добавления в /etc/hosts
+while true; do
+  read -r -n 1 -p "Add new string to /etc/hosts? (y|n) " yn
+  case $yn in
+  [Yy]*)
+    while true; do
+      read -r -p $'\n\n'"Enter string in format '<ip> <domain>': " domain_str
+      if [[ $domain_str =~ ^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\s[\w\.]+$ ]]; then
+        echo "$domain_str" >>/etc/hosts
+        break
+      fi
+    done
+    ;;
+
+  [Nn]*)
+    echo -e "\n"
+    break
+    ;;
+
+  *) echo -e "\nPlease answer Y or N!\n" ;;
+  esac
+done
 
 # перезагрузим сервисы prometheus и alertmanager
 echo -e "\nDONE\n"
