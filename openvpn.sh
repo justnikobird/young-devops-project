@@ -90,7 +90,7 @@ while true; do
     cd /etc/openvpn/server/
 
     # сгенерируем ключ для tls-crypt
-    openvpn --genkey --secret ta.key | tee /etc/openvpn/server/ta.key >/dev/null
+    openvpn --genkey --secret ta.key
     cp /etc/openvpn/server/ta.key /etc/openvpn/clients_config/keys/
     echo -e "\n====================\nTls-crypt-key generated /etc/openvpn/server/ta.key\n====================\n"
 
