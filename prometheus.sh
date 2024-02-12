@@ -110,7 +110,9 @@ sed -r -i "0,/(^.*\stargets:\s).*/s//\1['$domain_name:9093']/" /etc/prometheus/p
 echo -e "\n\n====================\DNS configuration\n====================\n"
 
 # закрепим доменное имя prometheus за адресом localhost
-echo "127.0.0.1 $domain_name" >>/etc/hosts
+if ! grep -Fxq "127.0.0.1 $domain_name" /etc/hosts &>/dev/null; then
+  echo "127.0.0.1 $domain_name" >>/etc/hosts
+fi
 
 # запросим у пользователя строки для добавления в /etc/hosts
 while true; do
