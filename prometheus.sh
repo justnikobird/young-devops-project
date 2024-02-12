@@ -10,7 +10,7 @@ if [[ "${UID}" -ne 0 ]]; then
 fi
 
 # проверим подключен ли репозиторий
-if [[ ! $(grep -rhE ^deb /etc/apt/sources.list*) == *"deb https://repo.justnikobird.ru:1111/lab focal main"* ]]; then
+if [[ ! $(grep -rhE ^deb /etc/apt/sources.list*) == *"deb https://repo-test.justnikobird.ru:1111/lab focal main"* ]]; then
   echo -e "Lab repo not connected!\nPlease run vm_start.sh script!\n"
   exit 1
 fi
@@ -98,6 +98,7 @@ read -r -p $'\n'"Prometheus password: " -s password
 echo -e "tls_server_config:\n  cert_file: $cert_file\n  key_file: $key_file\n\nbasic_auth_users:\n  $username: '$(htpasswd -nbB -C 10 admin "$password" | grep -o "\$.*")'" >/etc/prometheus/web.yml
 sed -r -i '0,/(^.*\susername:\s).*$/s//\1'"$username"'/' /etc/prometheus/prometheus.yml
 sed -r -i '0,/(^.*\spassword:\s).*$/s//\1'"$password"'/' /etc/prometheus/prometheus.yml
+sed -r -i '0,/(^.*\sca_file:\s).*$/s//\1'"$cert_file"'/' /etc/prometheus/prometheus.yml
 
 # перезагрузим сервисы prometheus и alertmanager
 echo -e "\nDONE\n"
