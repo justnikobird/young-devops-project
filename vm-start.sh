@@ -82,6 +82,7 @@ command_check iptables "Iptables" iptables
 command_check netfilter-persistent "Netfilter-persistent" iptables-persistent
 command_check openssl "Openssl" openssl
 command_check update-ca-certificates "Ca-certificates" ca-certificates
+command_check tee "Tee" coreutils
 
 # проверим наличие конфигурационного файла ssh
 if [ ! -f /etc/ssh/sshd_config ]; then
