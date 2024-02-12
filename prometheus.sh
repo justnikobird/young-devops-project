@@ -94,11 +94,15 @@ chown prometheus:prometheus /etc/prometheus/"$key_file"
 read -r -p $'\n'"Prometheus username: " username
 read -r -p $'\n'"Prometheus password: " -s password
 
+# запросим url для подключения prometheus к alertmanager
+read -r -p $'\n'"Prometheus url (format monitor.justnikobird.ru)" url
+
 # запишем настройки в конфигурационные файлы
 echo -e "tls_server_config:\n  cert_file: $cert_file\n  key_file: $key_file\n\nbasic_auth_users:\n  $username: '$(htpasswd -nbB -C 10 admin "$password" | grep -o "\$.*")'" >/etc/prometheus/web.yml
 sed -r -i '0,/(^.*\susername:\s).*$/s//\1'"$username"'/' /etc/prometheus/prometheus.yml
 sed -r -i '0,/(^.*\spassword:\s).*$/s//\1'"$password"'/' /etc/prometheus/prometheus.yml
 sed -r -i '0,/(^.*\sca_file:\s).*$/s//\1'"$cert_file"'/' /etc/prometheus/prometheus.yml
+sed -r -i '0,/(^.*\stargets:\s).*$/s//\1['"$url"':9093]/' /etc/prometheus/prometheus.yml
 
 # перезагрузим сервисы prometheus и alertmanager
 echo -e "\nDONE\n"
