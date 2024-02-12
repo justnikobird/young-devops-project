@@ -106,6 +106,8 @@ sed -r -i '0,/(^.*\spassword:\s).*$/s//\1'"$password"'/' /etc/prometheus/prometh
 sed -r -i '0,/(^.*\sca_file:\s).*$/s//\1'"$cert_file"'/' /etc/prometheus/prometheus.yml
 sed -r -i '0,/(^.*\stargets:\s\[[^\w\s]).*([^\w\s]\])/s//\1'"$domain_name"':9093\2/' /etc/prometheus/prometheus.yml
 
+sed -r -i "0,/(^.*\stargets:\s).*/s//\1['$domain_name:9093']/" /etc/prometheus/prometheus.yml
+
 # выполним настройку DNS
 echo -e "\n\n====================\DNS configuration\n====================\n"
 
