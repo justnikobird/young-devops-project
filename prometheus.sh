@@ -96,11 +96,11 @@ while true; do
   case $yn in
   [Yy]*)
     echo -e "\n"
-    cert_path=$(path_request certificate)
-    cp "$cert_path" /etc/prometheus/
-    cert_file=$(basename "$cert_path")
-    chmod 640 /etc/prometheus/"$cert_file"
-    chown prometheus:prometheus /etc/prometheus/"$cert_file"
+    exp_cert_path=$(path_request certificate)
+    cp "$exp_cert_path" /etc/prometheus/
+    exp_cert_file=$(basename "$exp_cert_path")
+    chmod 640 /etc/prometheus/"$exp_cert_file"
+    chown prometheus:prometheus /etc/prometheus/"$exp_cert_file"
     ;;
 
   [Nn]*)
