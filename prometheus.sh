@@ -107,7 +107,7 @@ sed -r -i '0,/(^.*\sca_file:\s).*$/s//\1'"$cert_file"'/' /etc/prometheus/prometh
 sed -r -i "0,/(^.*\stargets:\s).*/s//\1['$domain_name:9093']/" /etc/prometheus/prometheus.yml
 
 # выполним настройку DNS
-echo -e "\n\n====================\DNS configuration\n====================\n"
+echo -e "\n\n====================\nDNS configuration\n====================\n"
 
 # закрепим доменное имя prometheus за адресом localhost
 if ! grep -Fxq "127.0.0.1 $domain_name" /etc/hosts &>/dev/null; then
