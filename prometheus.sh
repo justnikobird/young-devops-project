@@ -90,6 +90,26 @@ key_file=$(basename "$key_path")
 chmod 640 /etc/prometheus/"$key_file"
 chown prometheus:prometheus /etc/prometheus/"$key_file"
 
+while true; do
+  read -r -n 1 -p $'\n\n'"Add exporter's certificate to prometheus directory? (y|n) " yn
+  case $yn in
+  [Yy]*)
+    cert_path=$(path_request certificate)
+    cp "$cert_path" /etc/prometheus/
+    cert_file=$(basename "$cert_path")
+    chmod 640 /etc/prometheus/"$cert_file"
+    chown prometheus:prometheus /etc/prometheus/"$cert_file"
+    ;;
+
+  [Nn]*)
+    echo -e "\n"
+    break
+    ;;
+
+  *) echo -e "\nPlease answer Y or N!\n" ;;
+  esac
+done
+
 # запросим username и password для авторизации в программе
 read -r -p $'\n'"Prometheus username: " username
 read -r -p $'\n'"Prometheus password: " -s password
