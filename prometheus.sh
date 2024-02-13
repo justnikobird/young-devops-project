@@ -80,14 +80,14 @@ echo -e "\n====================\nHTTPS configuration\n====================\n"
 cert_path=$(path_request certificate)
 cp "$cert_path" /etc/prometheus/
 cert_file=$(basename "$cert_path")
-chmod 744 /etc/prometheus/"$cert_file"
+chmod 640 /etc/prometheus/"$cert_file"
 chown prometheus:prometheus /etc/prometheus/"$cert_file"
 
 # запросим путь до файла ключа, перенесем его в рабочую директорию программы и поменяем владельца
 key_path=$(path_request key)
 cp "$key_path" /etc/prometheus/
 key_file=$(basename "$key_path")
-chmod 744 /etc/prometheus/"$key_file"
+chmod 640 /etc/prometheus/"$key_file"
 chown prometheus:prometheus /etc/prometheus/"$key_file"
 
 # запросим username и password для авторизации в программе
