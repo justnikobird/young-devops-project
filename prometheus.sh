@@ -130,6 +130,8 @@ while true; do
         echo -e "\n\n/etc/hosts file content:\n\n"
         cat /etc/hosts
         break
+      else
+        echo -e "\nWrong string format!\n"
       fi
     done
     ;;
