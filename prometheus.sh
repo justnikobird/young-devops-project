@@ -95,6 +95,7 @@ while true; do
   read -r -n 1 -p $'\n\n'"Add exporter's certificate to prometheus directory? (y|n) " yn
   case $yn in
   [Yy]*)
+    echo -e "\n"
     cert_path=$(path_request certificate)
     cp "$cert_path" /etc/prometheus/
     cert_file=$(basename "$cert_path")
