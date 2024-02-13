@@ -90,6 +90,7 @@ key_file=$(basename "$key_path")
 chmod 640 /etc/prometheus/"$key_file"
 chown prometheus:prometheus /etc/prometheus/"$key_file"
 
+# перенесем в директорию prometheus сертификаты экспортеров
 while true; do
   read -r -n 1 -p $'\n\n'"Add exporter's certificate to prometheus directory? (y|n) " yn
   case $yn in
