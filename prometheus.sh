@@ -125,8 +125,10 @@ while true; do
   [Yy]*)
     while true; do
       read -r -p $'\n\n'"Enter string in format '<ip> <domain>': " domain_str
-      if [[ $domain_str =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\s[a-z\.]+$ ]]; then
+      if [[ $domain_str =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}.[a-z\.]+$ ]]; then
         echo "$domain_str" >>/etc/hosts
+        echo -e "\n\n/etc/hosts file content:\n\n"
+        cat /etc/hosts
         break
       fi
     done
