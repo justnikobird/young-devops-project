@@ -115,9 +115,12 @@ if ! grep -Fxq "127.0.0.1 $domain_name" /etc/hosts &>/dev/null; then
   echo -e "\nString '127.0.0.1 $domain_name' added to /etc/hosts\n\n"
 fi
 
+echo -e "/etc/hosts file content:\n\n"
+cat /etc/hosts
+
 # запросим у пользователя строки для добавления в /etc/hosts
 while true; do
-  read -r -n 1 -p "Add new string to /etc/hosts? (y|n) " yn
+  read -r -n 1 -p $'\n\n'"Add new string to /etc/hosts? (y|n) " yn
   case $yn in
   [Yy]*)
     while true; do
