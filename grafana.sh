@@ -47,9 +47,8 @@ systemctl restart systemd-timesyncd.service
 apt-get update
 command_check iptables "Iptables" iptables
 command_check netfilter-persistent "Netfilter-persistent" iptables-persistent
-command_check prometheus "Prometheus" prometheus-lab
 command_check basename "Basename" coreutils
-command_check grafana-server "Grafana" grafana-enterprise
+command_check grafana-server "Grafana" grafana-lab
 
 # настроим iptables
 echo -e "\n====================\nIptables configuration\n====================\n"
@@ -66,7 +65,7 @@ cert_path=$(path_request certificate)
 cp "$cert_path" /etc/grafana/
 # отделим название файла от пути и поменяем права на доступ
 cert_file=$(basename "$cert_path")
-chmod 744 /etc/grafana/"$cert_file"
+chmod 640 /etc/grafana/"$cert_file"
 chown root:grafana /etc/grafana/"$cert_file"
 
 # запросим путь до ключа и перенесем его в рабочую директорию программы
@@ -74,16 +73,15 @@ key_path=$(path_request key)
 cp "$key_path" /etc/grafana/
 # отделим название файла от пути и поменяем права на доступ
 key_file=$(basename "$key_path")
-chmod 744 /etc/grafana/"$key_file"
+chmod 640 /etc/grafana/"$key_file"
 chown root:grafana /etc/grafana/"$key_file"
 
 # запросим доменное имя
-read -r -e -p $'\n'"Please input domain (example: justnikobird.ru): " domain
+read -r -e -p $'\n'"Please input domain name (example: monitor.justnikobird.ru): " domain
 
 # внесем настройки в конфигурационный файл grafana
 sed -i 's/^\(protocol\).*$/\1 = https/' /etc/grafana/grafana.ini
 sed -i 's/^\;\(domain\).*$/\1 = '"$domain"'/' /etc/grafana/grafana.ini
-sed -i 's@^\;\(root_url\).*$@\1 = https://'"$domain"'@' /etc/grafana/grafana.ini
 sed -i 's@^\;\(cert_file\).*$@\1 = /etc/grafana/'"$cert_file"'@' /etc/grafana/grafana.ini
 sed -i 's@^\;\(cert_key\).*$@\1 = /etc/grafana/'"$key_file"'@' /etc/grafana/grafana.ini
 
