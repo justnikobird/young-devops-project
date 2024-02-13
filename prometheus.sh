@@ -152,5 +152,7 @@ systemctl restart prometheus.service
 systemctl enable prometheus.service
 systemctl restart prometheus-alertmanager.service
 systemctl enable prometheus-alertmanager.service
+
+echo -e "\n====================\nPrometheus listening on port 9090\nAlertmanager listening on port 9093\n====================\n"
 echo -e "\nOK\n"
 exit 0
