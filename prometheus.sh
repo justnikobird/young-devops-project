@@ -112,6 +112,7 @@ echo -e "\n\n====================\DNS configuration\n====================\n"
 # закрепим доменное имя prometheus за адресом localhost
 if ! grep -Fxq "127.0.0.1 $domain_name" /etc/hosts &>/dev/null; then
   echo "127.0.0.1 $domain_name" >>/etc/hosts
+  echo -e "\nString '127.0.0.1 $domain_name' added to /etc/hosts\n\n"
 fi
 
 # запросим у пользователя строки для добавления в /etc/hosts
