@@ -95,7 +95,7 @@ read -r -p $'\n'"Prometheus username: " username
 read -r -p $'\n'"Prometheus password: " -s password
 
 # запросим доменное имя для подключения prometheus к alertmanager
-read -r -p $'\n\n'"Prometheus url (format monitor.justnikobird.ru): " domain_name
+read -r -p $'\n\n'"Prometheus domain name (format monitor.justnikobird.ru): " domain_name
 
 # запишем настройки в конфигурационный файл /etc/prometheus/web.yml
 echo -e "tls_server_config:\n  cert_file: $cert_file\n  key_file: $key_file\n\nbasic_auth_users:\n  $username: '$(htpasswd -nbB -C 10 admin "$password" | grep -o "\$.*")'" >/etc/prometheus/web.yml
