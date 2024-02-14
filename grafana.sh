@@ -91,5 +91,7 @@ echo -e "\nDONE\n"
 systemctl daemon-reload
 systemctl restart grafana-server.service
 systemctl enable grafana-server.service
+
+echo -e "\n====================\nGrafana listening on port 3000\n====================\n"
 echo -e "\nOK\n"
 exit 0
