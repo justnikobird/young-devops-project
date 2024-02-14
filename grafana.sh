@@ -80,7 +80,7 @@ chown root:grafana /etc/grafana/"$key_file"
 read -r -e -p $'\n'"Please input domain name (example: monitor.justnikobird.ru): " domain
 
 # внесем настройки в конфигурационный файл grafana
-sed -i 's/^\(protocol\).*$/\1 = https/' /etc/grafana/grafana.ini
+sed -i 's/^\;\(protocol\).*$/\1 = https/' /etc/grafana/grafana.ini
 sed -i 's/^\;\(domain\).*$/\1 = '"$domain"'/' /etc/grafana/grafana.ini
 sed -i 's@^\;\(cert_file\).*$@\1 = /etc/grafana/'"$cert_file"'@' /etc/grafana/grafana.ini
 sed -i 's@^\;\(cert_key\).*$@\1 = /etc/grafana/'"$key_file"'@' /etc/grafana/grafana.ini
